@@ -5,7 +5,7 @@ import time
 import pandas as pd
 from openai import OpenAI
 
-client = OpenAI()  # lee OPENAI_API_KEY
+client = OpenAI() 
 
 SYSTEM_MSG = """
 Eres un clínico experto en lenguaje y demencias.
@@ -44,7 +44,7 @@ def score_with_gpt(text: str):
     prompt = USER_TEMPLATE.format(transcript=text)
 
     resp = client.chat.completions.create(
-        model="gpt-3.5-turbo",  # cámbialo a gpt-4o o gpt-4o-mini si tienes acceso
+        model="gpt-4", 
         response_format={"type": "json_object"},
         messages=[
             {"role": "system", "content": SYSTEM_MSG},
@@ -87,16 +87,17 @@ def main(ids_file, trans_dir, out_csv, sleep_sec=0.5):
         row.update(scores)
         rows.append(row)
 
-        time.sleep(sleep_sec)  # para no spamear la API
+        time.sleep(sleep_sec)  
 
     pd.DataFrame(rows).to_csv(out_csv, index=False)
     print(f"[+] Guardado GPT-features: {out_csv}")
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("--ids", required=True)         # data/splits/train.txt
-    ap.add_argument("--trans_dir", required=True)   # data/transcripts
-    ap.add_argument("--out", required=True)         # features/gpt/train.csv
+    ap.add_argument("--ids", required=True)        
+    ap.add_argument("--trans_dir", required=True)   
+    ap.add_argument("--out", required=True)        
     ap.add_argument("--sleep", type=float, default=0.5)
     args = ap.parse_args()
     main(args.ids, args.trans_dir, args.out, args.sleep)
+
