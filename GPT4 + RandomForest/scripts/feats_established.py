@@ -24,7 +24,7 @@ def simple_features(text: str):
     )
 
 def main(trans_dir, ids_file, labels_csv, out_csv):
-    df_labels = pd.read_csv(labels_csv)  # columnas: id,label
+    df_labels = pd.read_csv(labels_csv)
     label_map = dict(zip(df_labels["id"], df_labels["label"]))
 
     rows = []
@@ -54,3 +54,4 @@ if __name__ == "__main__":
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
     main(args.trans_dir, args.ids, args.labels_csv, args.out)
+
